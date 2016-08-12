@@ -1,6 +1,6 @@
 angular.module('cmcIonic.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function(Backand, $state, $scope, $rootScope, $ionicModal, LoginService) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -26,20 +26,30 @@ angular.module('cmcIonic.controllers', [])
   };
 
   // Open the login modal
-  $scope.login = function(index) {
+  $scope.login = function() {
     $scope.oModal1.show();
   };
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
+    console.log('email is', $scope.loginData.email);
+    console.log('password is', $scope.loginData.password);
+    LoginService.signin($scope.loginData.email, $scope.loginData.password)
+      .then(function(){
+          onLogin();
+          $scope.oModal1.hide();
+      }, function (error) {
+         console.log(error)
+      })
   };
+
+  function onLogin(){
+       $rootScope.$broadcast('authorized');
+       $state.go('app.home');
+   }
+
+
 
   $ionicModal.fromTemplateUrl('templates/signup.html', {
     scope: $scope
@@ -59,15 +69,29 @@ angular.module('cmcIonic.controllers', [])
 
   // Perform the signup action when the user submits the signup form
   $scope.doSignup = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a signup delay. Remove this and replace with your signup
-    // code if using a signup system
-    $timeout(function() {
-      $scope.closeSignup();
-    }, 1000);
+    console.log('Doing signUp', $scope.signupData);
+    this.errorMessage = '';
+    LoginService.signup($scope.signupData.firstName, $scope.signupData.lastName, 
+                        $scope.signupData.email, $scope.signupData.password, 
+                        $scope.signupData.again)
+                .then(function (response) {
+                    // success
+                    onLogin();
+                    $scope.oModal2.hide();
+                }, function (reason) {
+                    if(reason.data.error_description !== undefined){
+                        this.errorMessage = reason.data.error_description;
+                    }
+                    else{
+                        this.errorMessage = reason.data;
+                    }
+                })
   };
+
+  //loginData.error = '';
+  this.errorMessage = '';
 })
+
 
 .controller('EventlistsCtrl', function($scope) {
 })

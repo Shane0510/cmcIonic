@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('cmcIonic', ['ionic', 'backand','cmcIonic.controllers', 'cmcIonic.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -22,52 +22,58 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function(BackandProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
+
+  BackandProvider.setAppName('cmcIonic');
+  BackandProvider.setSignUpToken('c84192de-0019-4f8c-aa79-9c4dda98583e');
+  BackandProvider.setAnonymousToken('dfae337f-8784-4f2c-a56a-a75ee8899286');
+
   $stateProvider
 
-    .state('app', {
-    url: '/app',
-    abstract: true,
-    templateUrl: 'templates/menu.html',
-    controller: 'AppCtrl'
-  })
+      .state('app', {
+        url: '/app',
+        abstract: true,
+        templateUrl: 'templates/menu.html',
+        controller: 'AppCtrl'
+      })
 
-  .state('app.search', {
-    url: '/search',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/search.html'
-      }
-    }
-  })
-
-  .state('app.browse', {
-      url: '/browse',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/browse.html'
+      .state('app.signup', {
+        url: '/signup',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/signup.html'
+          }
         }
-      }
-    })
-    .state('app.playlists', {
-      url: '/playlists',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
-        }
-      }
-    })
+      })
 
-  .state('app.single', {
-    url: '/playlists/:playlistId',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
-      }
-    }
+      .state('app.home', {
+          url: '/home',
+          views: {
+            'menuContent': {
+              templateUrl: 'templates/home.html'
+            }
+          }
+        })
+        .state('app.eventlists', {
+          url: '/eventlists',
+          views: {
+            'menuContent': {
+              templateUrl: 'templates/eventlists.html',
+              controller: 'EventlistsCtrl'
+            }
+          }
+        })
+
+      .state('app.buyTickets', {
+        url: '/buyTickets',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/buyTickets.html',
+            controller: 'buyTicketslistCtrl'
+          }
+        }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/home');
+  $httpProvider.interceptors.push('APIInterceptor');
 });

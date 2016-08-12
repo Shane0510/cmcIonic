@@ -8,21 +8,59 @@
   <ion-content>
     <form ng-submit="doSignup()">
       <div class="list">
-        <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text" ng-model="SignupData.username">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="password" ng-model="SignupData.password">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Comfirm Your Password</span>
-          <input type="password" ng-model="SignupData.renterpassword">
-        </label>
-        <label class="item">
-          <button class="button button-block button-positive" type="submit">Submit</button>
-        </label>
+        <div class="row">
+            <div class="col">
+                <label class="item item-input">
+                  <input id="email" name="email" type="email" 
+                  placeholder="Your email"
+                                       ng-model="signupData.email">
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label class="item item-input">
+                  <input id="firstname" name="firstname" type="text" 
+                  placeholder="Your first name"
+                                       ng-model="signupData.firstName">
+                </label>
+            </div>
+            <div class="col">
+                <label class="item item-input">
+                  <input id="username" name="lastname" type="text" 
+                  placeholder="Your last name"
+                                       ng-model="signupData.lastName">
+                </label>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+
+                <label class="item item-input">
+                  <input id="password" name="password" type="password" 
+                  placeholder="Your password"
+                                       ng-model="signupData.password">
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+
+                <label class="item item-input">
+                  <input id="again" name="again" type="password" 
+                  placeholder="confirm your password"
+                                       ng-model="signupData.again">
+                </label>
+            </div>
+        </div>
+        <h4 style="color:red;" ng-bind="signupData.errorMessage"></h4>
+
+        <div class="">
+          <button class="button button-block button-stable" type="submit">
+                   Submit
+          </button>
+        </div>
       </div>
     </form>
   </ion-content>
