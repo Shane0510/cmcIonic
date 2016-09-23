@@ -93,7 +93,47 @@ angular.module('cmcIonic.controllers', [])
 })
 
 
-.controller('EventlistsCtrl', function($scope) {
+.controller('EventlistsCtrl', function($scope, $state, EventsModel) {
+  var event = this;
+
+  var events = [];
+
+  var shownGroup;
+
+  function init() {
+       getAll();
+       console.log("start to run");
+  }
+
+  function getAll() {
+      EventsModel.all()
+          .then(function (result) {
+              event.events = result.data.data;
+          });
+  }
+
+  /*
+   * if given group is the selected group, deselect it
+   * else, select the given group
+   */
+   function toggleGroup(group) {
+      if (isGroupShown(group)) {
+            shownGroup = null;
+      } else {
+             shownGroup = group;
+      }
+   };
+
+    function isGroupShown(group) {
+      return shownGroup === group;
+    };
+
+    event.events = events;
+    event.toggleGroup = toggleGroup;
+    event.isGroupShown = isGroupShown;
+    event.getAll = getAll;
+    event.init = init;
+
 })
 
 .controller('buyTicketslistCtrl', function($scope) {

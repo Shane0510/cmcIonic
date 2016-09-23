@@ -1,9 +1,52 @@
-<ion-view view-title="Event Lists">
-  <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="eventlist in eventlists" href="#/app/eventlists/{{eventlist.id}}">
-        {{eventlist.title}}
+<ion-view view-title="Event List" ng-init="event.init()">
+  <ion-content class="padding" style="background-color: #fff;">
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="doRefresh()">
+    </ion-refresher>
+    <div class="ticket-card" ng-repeat="eachEvent in event.events" ng-class="{active: event.isGroupShown(eachEvent)}">
+      <div class="cover">
+        <img ng-src="{{eachEvent.image}}" alt="">
+        <div class="info">
+          <div class="going">
+            <i class="ion-link"></i> <a style="font-weight: 500; text-decoration: none;" ng-href="{{eachEvent.url}}">Details</a>
+          </div>
+          <div class="tickets-left">
+            <i class="fa fa-ticket"></i><!--  240 Tickets Left -->
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="artist">
+          <h6 class="info">{{eachEvent.info}}</h6>
+          <h4 class="name">{{eachEvent.title}}</h4>
+        </div>
+        <div class="clearfix"></div>
+        <div class="info">
+          <p class="location">
+            <i class="ion-ios-location"></i> {{eachEvent.location}}
+          </p>
+          <p class="date">
+            <i class="ion-ios-calendar"></i> {{eachEvent.date}}
+          </p>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="collapse" style="text-transform: uppercase;" ng-show="event.isGroupShown(eachEvent)">
+        <ul class="list-unstyled">
+          <li ng-repeat="(key, value) in eachEvent.price">
+            <div class="ticket">
+              <h5>{{key}}<br></h5>
+            </div>
+            <button class="price button-clear">
+              <span class="value"><b>$</b>{{value}}&nbsp<i class="icon-right ion-chevron-right"></i></span>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <ion-item class="btn toggle-tickets" ng-click="event.toggleGroup(eachEvent)" ng-class="{active: event.isGroupShown(eachEvent)}">
+        Show Tickets
       </ion-item>
-    </ion-list>
+    </div>
   </ion-content>
 </ion-view>

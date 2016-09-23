@@ -63,7 +63,7 @@ angular.module('cmcIonic', ['ionic', 'backand','cmcIonic.controllers', 'cmcIonic
           views: {
             'menuContent': {
               templateUrl: 'templates/eventlists.html',
-              controller: 'EventlistsCtrl'
+              controller: 'EventlistsCtrl as event'
             }
           }
         })
